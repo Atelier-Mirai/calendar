@@ -11,3 +11,5 @@
   * pro.foto https://pro-foto.jp/
   * BEIZ images https://www.beiz.jp/
   * Pixabay https://pixabay.com/ja/
+
+作成例は、https://shichiyouhyou.netlify.app/ にて公開中です。

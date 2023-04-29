@@ -1,4 +1,4 @@
-/* 暦 & 簡易ブログ
+/* 暦 & 簡易ブログ のための JavaScript
  * https://www.cssscript.com/basic-calendar-view/ を参考に実装
 -------------------------------------------------------------------------*/
 
@@ -10,8 +10,16 @@ const HOLIDAYS     = JSON.parse(holidaysData.textContent);
 const blogsData    = document.getElementById("blogs-data");
 const BLOGS        = JSON.parse(blogsData.textContent);
 
-// 本日
-let today        = new Date()
+// ブログに日付の記載があれば、それを、無ければ今日を、当日の日付とする
+// <time datetime="2023-04-01">四月一日</time>
+let today = document.querySelector("time")
+if (today && (t = today.getAttribute("datetime"))) {
+  let s = Date.parse(t)
+  today = new Date(s)
+} else {
+  today        = new Date()
+}
+// 年と月も設定
 let currentYear  = today.getFullYear()
 let currentMonth = today.getMonth() + 1
 
