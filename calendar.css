@@ -44,7 +44,7 @@
   BEIZ images https://www.beiz.jp/
   Pixabay https://pixabay.com/ja/ */
 #wallpaper[data-month= "1"] { background-image: url("images/snow.webp"); }
-#wallpaper[data-month= "2"] { background-image: url("images/glasslands.webp"); }
+#wallpaper[data-month= "2"] { background-image: url("images/grasslands.webp"); }
 #wallpaper[data-month= "3"] { background-image: url("images/hoursetail.webp"); }
 #wallpaper[data-month= "4"] { background-image: url("images/cherry.webp"); }
 #wallpaper[data-month= "5"] { background-image: url("images/leaves.webp"); }
@@ -73,25 +73,25 @@
 
 /* 月ごとの暦の写真
 ---------------------------------------------------------------------*/
-#calendar .photograph {
+#calendar .photo {
   aspect-ratio: 16 / 9; /* 横16楯9に設定 */
   background-position: center center;
   background-size: cover;
 }
 
 /* 月に応じて 写真が変わるように */
-#calendar .photograph[data-month= "1"] { background-image: url("images/suisen.webp"); }
-#calendar .photograph[data-month= "2"] { background-image: url("images/nanohana.webp"); }
-#calendar .photograph[data-month= "3"] { background-image: url("images/momo.webp"); }
-#calendar .photograph[data-month= "4"] { background-image: url("images/sakura.webp"); }
-#calendar .photograph[data-month= "5"] { background-image: url("images/fuji.webp"); }
-#calendar .photograph[data-month= "6"] { background-image: url("images/ajisai.webp"); }
-#calendar .photograph[data-month= "7"] { background-image: url("images/hanabi.webp"); }
-#calendar .photograph[data-month= "8"] { background-image: url("images/himawari.webp"); }
-#calendar .photograph[data-month= "9"] { background-image: url("images/higanbana.webp"); }
-#calendar .photograph[data-month="10"] { background-image: url("images/kosumosu.webp"); }
-#calendar .photograph[data-month="11"] { background-image: url("images/susuki.webp"); }
-#calendar .photograph[data-month="12"] { background-image: url("images/tsubaki.webp"); }
+#calendar .photo[data-month= "1"] { background-image: url("images/suisen.webp"); }
+#calendar .photo[data-month= "2"] { background-image: url("images/nanohana.webp"); }
+#calendar .photo[data-month= "3"] { background-image: url("images/momo.webp"); }
+#calendar .photo[data-month= "4"] { background-image: url("images/sakura.webp"); }
+#calendar .photo[data-month= "5"] { background-image: url("images/fuji.webp"); }
+#calendar .photo[data-month= "6"] { background-image: url("images/ajisai.webp"); }
+#calendar .photo[data-month= "7"] { background-image: url("images/hanabi.webp"); }
+#calendar .photo[data-month= "8"] { background-image: url("images/himawari.webp"); }
+#calendar .photo[data-month= "9"] { background-image: url("images/higanbana.webp"); }
+#calendar .photo[data-month="10"] { background-image: url("images/kosumosu.webp"); }
+#calendar .photo[data-month="11"] { background-image: url("images/susuki.webp"); }
+#calendar .photo[data-month="12"] { background-image: url("images/tsubaki.webp"); }
 
 
 /* 操作盤

@@ -2,31 +2,43 @@
  * https://www.cssscript.com/basic-calendar-view/ を参考に実装
 -------------------------------------------------------------------------*/
 
-// 祝日データを取得
-const holidaysData = document.getElementById("holidays-data");
-const HOLIDAYS     = JSON.parse(holidaysData.textContent);
+// ブログデータを設定
+const BLOGS = {
+  "R05-04-01": "本日四月一日より令和五年度の始まり、近くの公園の桜も咲いています。",
+  "R05-04-03": "仕事始めです",
+  "R05-04-07": "週末はゆっくりします",
+  "R05-04-19": "公園でお散歩しました",
+  "R05-04-20": "今日も公園でお散歩しました",
+  "R05-04-29": "昭和の日です",
+  "R05-05-05": "こどもの日のお祝いです",
+  "R05-05-07": "連休も今日で最後です",
+  "R05-06-01": "今日から六月です",
+  "R05-06-10": "時の記念日です"
+}
 
-// ブログデータを取得
-const blogsData    = document.getElementById("blogs-data");
-const BLOGS        = JSON.parse(blogsData.textContent);
+// 祝日データ
+// Holidays JP API より 祝日データを取得し 貼り付ける
+// https://holidays-jp.github.io/api/v1/date.json
+const HOLIDAYS = {"2022-01-01": "元日", "2022-01-10": "成人の日", "2022-02-11": "建国記念の日", "2022-02-23": "天皇誕生日", "2022-03-21": "春分の日", "2022-04-29": "昭和の日", "2022-05-03": "憲法記念日", "2022-05-04": "みどりの日", "2022-05-05": "こどもの日", "2022-07-18": "海の日", "2022-08-11": "山の日", "2022-09-19": "敬老の日", "2022-09-23": "秋分の日", "2022-10-10": "スポーツの日", "2022-11-03": "文化の日", "2022-11-23": "勤労感謝の日", "2023-01-01": "元日", "2023-01-02": "休日 元日", "2023-01-09": "成人の日", "2023-02-11": "建国記念の日", "2023-02-23": "天皇誕生日", "2023-03-21": "春分の日", "2023-04-29": "昭和の日", "2023-05-03": "憲法記念日", "2023-05-04": "みどりの日", "2023-05-05": "こどもの日", "2023-07-17": "海の日", "2023-08-11": "山の日", "2023-09-18": "敬老の日", "2023-09-23": "秋分の日", "2023-10-09": "スポーツの日", "2023-11-03": "文化の日", "2023-11-23": "勤労感謝の日", "2024-01-01": "元日", "2024-01-08": "成人の日", "2024-02-11": "建国記念の日", "2024-02-12": "建国記念の日 振替休日", "2024-02-23": "天皇誕生日", "2024-03-20": "春分の日", "2024-04-29": "昭和の日", "2024-05-03": "憲法記念日", "2024-05-04": "みどりの日", "2024-05-05": "こどもの日", "2024-05-06": "こどもの日 振替休日", "2024-07-15": "海の日", "2024-08-11": "山の日", "2024-08-12": "休日 山の日", "2024-09-16": "敬老の日", "2024-09-22": "秋分の日", "2024-09-23": "秋分の日 振替休日", "2024-10-14": "スポーツの日", "2024-11-03": "文化の日", "2024-11-04": "文化の日 振替休日", "2024-11-23": "勤労感謝の日"}
 
 // ブログに日付の記載があれば、それを、無ければ今日を、当日の日付とする
 // <time datetime="2023-04-01">四月一日</time>
 let today = document.querySelector("time")
+let t
 if (today && (t = today.getAttribute("datetime"))) {
   let s = Date.parse(t)
   today = new Date(s)
 } else {
-  today        = new Date()
+  today = new Date()
 }
 // 年と月も設定
-let currentYear  = today.getFullYear()
-let currentMonth = today.getMonth() + 1
+let currentYear   = today.getFullYear()
+let currentMonth  = today.getMonth() + 1
 
 // 定数宣言
-const thisYear   = currentYear
-const thisMonth  = currentMonth
-const thisDay    = today.getDate()
+const thisYear    = currentYear
+const thisMonth   = currentMonth
+const thisDay     = today.getDate()
 const MONTHS      = ["", "睦月", "如月", "彌生", "卯月", "皐月", "水無月", "文月", "葉月", "長月", "神無月", "霜月", "師走"]
 const WDAYS       = ["日", "月", "火", "水", "木", "金", "土"]
 const NAME_OF_DAY = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
@@ -38,10 +50,10 @@ wallpaper.setAttribute("data-month", currentMonth)
 const calendar  = document.getElementById("calendar")
 
 // 月ごとの暦の写真の為の要素生成
-const photograph = document.createElement("div")
-photograph.className = "photograph"
-photograph.setAttribute("data-month", currentMonth)
-calendar.appendChild(photograph)
+const photo = document.createElement("div")
+photo.className = "photo"
+photo.setAttribute("data-month", currentMonth)
+calendar.append(photo)
 
 // 前月翌月の操作盤の為の要素生成
 const panel = document.createElement("div")
@@ -51,13 +63,13 @@ panel.className = "panel"
   a_prev.className = "prev"
   a_prev.setAttribute("title", "前月")
   a_prev.innerHTML = `<i class="fa-solid fa-angle-left"></i>`
-  a_prev.addEventListener("click", previousMonth, false)
+  a_prev.addEventListener("click", previousMonth)
   // 翌月
   const a_next = document.createElement("a")
   a_next.className = "next"
   a_next.setAttribute("title", "翌月")
   a_next.innerHTML = `<i class="fa-solid fa-angle-right"></i>`
-  a_next.addEventListener("click", nextMonth, false)
+  a_next.addEventListener("click", nextMonth)
   // 年表示
   const span_year = document.createElement("span")
   span_year.className = "year"
@@ -68,11 +80,11 @@ panel.className = "panel"
   span_month.className = "month"
   span_month.setAttribute("data-month", currentMonth)
   span_month.innerHTML = MONTHS[currentMonth]
-panel.appendChild(a_prev)
-panel.appendChild(a_next)
-panel.appendChild(span_year)
-panel.appendChild(span_month)
-calendar.appendChild(panel)
+panel.append(a_prev)
+panel.append(a_next)
+panel.append(span_year)
+panel.append(span_month)
+calendar.append(panel)
 
 // 暦本体の為の要素生成
 const table = document.createElement("table")
@@ -80,26 +92,26 @@ const thead = document.createElement("thead")
 let tr = document.createElement("tr")
 for (wday in WDAYS) {
   th   = document.createElement("th")
-  text = document.createTextNode(`${WDAYS[wday]}`)
-  th.appendChild(text)
-  tr.appendChild(th)
+  text = `${WDAYS[wday]}`
+  th.append(text)
+  tr.append(th)
 }
-thead.appendChild(tr)
-table.appendChild(thead)
-calendar.appendChild(table)
+thead.append(tr)
+table.append(thead)
+calendar.append(table)
 
 // 今月投稿したブログの一覧の為の要素生成
 const blogHeader = document.createElement("p")
 blogHeader.className = "blog header"
 blogHeader.innerHTML = "今月の投稿"
-calendar.appendChild(blogHeader)
+calendar.append(blogHeader)
 const nav = document.createElement("nav")
 let ul = document.createElement("ul")
 ul.id = "ul"
-nav.appendChild(ul)
-calendar.appendChild(nav)
+nav.append(ul)
+calendar.append(nav)
 
-// 当月の暦生成&表示
+// 七曜表生成
 showCalendar(currentYear, currentMonth)
 
 // 前月操作時の各種更新
@@ -111,7 +123,7 @@ function previousMonth() {
   document.querySelector("#calendar .month").setAttribute("data-month", currentMonth)
   document.querySelector("#calendar .month").innerText = MONTHS[currentMonth]
   document.getElementById("wallpaper").setAttribute("data-month", currentMonth)
-  document.querySelector("#calendar .photograph").setAttribute("data-month", currentMonth)
+  document.querySelector("#calendar .photo").setAttribute("data-month", currentMonth)
   // カレンダー生成&表示
   showCalendar(currentYear, currentMonth)
 }
@@ -125,18 +137,17 @@ function nextMonth() {
   document.querySelector("#calendar .month").setAttribute("data-month", currentMonth)
   document.querySelector("#calendar .month").innerText = MONTHS[currentMonth]
   document.getElementById("wallpaper").setAttribute("data-month", currentMonth)
-  document.querySelector("#calendar .photograph").setAttribute("data-month", currentMonth)
+  document.querySelector("#calendar .photo").setAttribute("data-month", currentMonth)
   // カレンダー生成&表示
   showCalendar(currentYear, currentMonth)
 }
 
 // 当月の暦生成&表示
 function showCalendar(year, month) {
-  let firstDay = zeller(year, month, 1)
-
-  // 以前の暦を削除 ＆ 今月の暦新規作成
-  tbody     = document.getElementById("tbody")
+  // 以前の七曜表を削除
+  tbody = document.getElementById("tbody")
   if (tbody !== null) { tbody.remove() }
+  // 当月の七曜表を新規作成
   tbody     = document.createElement("tbody")
   tbody.id  = "tbody"
 
@@ -145,16 +156,20 @@ function showCalendar(year, month) {
   if (ul !== null) { ul.remove() }
   ul     = document.createElement("ul")
   ul.id  = "ul"
-  nav.appendChild(ul)
+  nav.append(ul)
 
   // 月初の空日処理
   let wday = 0
   let tr = document.createElement("tr")
 
+  // 今月1日は何曜日か (日曜日: 0, 土曜日: 6)
+  let firstDay = zeller(year, month, 1)
+
   // 月が始まるまでの空日処理
+  // (今月1日が土曜日なら 6つ空白が必要)
   for (let date = 1 - firstDay; date < 1; date++, wday++) {
     td     = document.createElement("td")
-    tr.appendChild(td)
+    tr.append(td)
   }
 
   // 一日から末日までの処理
@@ -198,31 +213,30 @@ function showCalendar(year, month) {
       blog_a  = document.createElement("a")
       blog_a.setAttribute("href", link)
       blog_a.innerHTML = blog_no_title
-      li.appendChild(blog_a)
-      ul.appendChild(li)
+      li.append(blog_a)
+      ul.append(li)
     }
 
-    td.appendChild(a)
-    tr.appendChild(td)
+    td.append(a)
+    tr.append(td)
 
     // 週末(土曜日)まで処理したら 翌週の行を生成 */
     if (wday === 6) {
-      tbody.appendChild(tr)
+      tbody.append(tr)
       tr = document.createElement("tr")
       wday = 0
     } else {
       wday++
     }
   }
-  tbody.appendChild(tr)
-  table.appendChild(tbody)
+  tbody.append(tr)
+  table.append(tbody)
 }
 
 // その月の日数を返す
 function daysInMonth(year, month) {
   if (leapYear()) {
-    // 閏年
-    //   1   2   3   4   5   6   7   8   9  10  11  12月
+    // 閏年     1   2   3   4   5   6   7   8   9  10  11  12月
     return [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month]
   } else {
     // 平年
@@ -240,7 +254,7 @@ function leapYear(year) {
 function zeller(year, month, day) {
   if (month === 1 || month === 2) {
     month += 12
-    year  -= 1
+    year  -=  1
   }
 
   let d     = day
